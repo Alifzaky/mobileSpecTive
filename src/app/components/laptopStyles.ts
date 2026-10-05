@@ -154,4 +154,34 @@ export const styles = StyleSheet.create({
     color: "#9ca3af",
     lineHeight: 18,
   },
+  searchInput: {
+    backgroundColor: '#111827',
+    borderWidth: 1,
+    borderColor: '#1f2937',
+    borderRadius: 8,
+    padding: 12,
+    color: '#ffffff',
+    marginBottom: 16,
+},
+statsContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  backgroundColor: '#0f172a',
+  padding: 10,
+  borderRadius: 8,
+  marginBottom: 16,
+  borderWidth: 1,
+  borderColor: '#1e293b',
+},
+statsText: {
+  fontSize: 12,
+  color: '#94a3b8',
+  fontWeight: '500',
+},
+emptyText: {
+  color: '#94a3b8',
+  textAlign: 'center',
+  marginVertical: 20,
+  fontSize: 14,
+}
 });

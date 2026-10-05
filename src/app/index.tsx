@@ -4,21 +4,33 @@ import {
   ScrollView,
   StatusBar,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 
-// Mengimpor modul dari masing-masing bagian kelompok
 import { dataTips } from "./components/laptopData";
 import {
   filterLaptopBerdasarkanKategori,
   formatRupiah,
 } from "./components/laptopLogic";
 import { styles } from "./components/laptopStyles";
+import {
+  cariLaptopByKeyword,
+  getStatistikLaptop,
+} from "./components/laptopUtils";
 
 export default function Index() {
   const [kategoriDipilih, setKategoriDipilih] = useState<string>("Semua");
-  const laptopTampil = filterLaptopBerdasarkanKategori(kategoriDipilih);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const laptopBerdasarkanKategori =
+    filterLaptopBerdasarkanKategori(kategoriDipilih);
+  const laptopTampil = cariLaptopByKeyword(
+    laptopBerdasarkanKategori,
+    searchQuery,
+  );
+  const statistik = getStatistikLaptop(laptopBerdasarkanKategori);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -58,41 +70,63 @@ export default function Index() {
           ))}
         </View>
 
-        <Text style={styles.sectionTitle}>Rekomendasi Perangkat</Text>
-        {laptopTampil.map((laptop) => (
-          <View key={laptop.id} style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>{laptop.nama}</Text>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Cari nama laptop atau processor..."
+          placeholderTextColor="#64748b"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
 
-              {/* Inline Style Kondisional */}
-              <View
-                style={[
-                  styles.badge,
-                  {
-                    backgroundColor:
-                      laptop.kategori === "Coding"
-                        ? "#0284c7"
-                        : laptop.kategori === "Gaming"
-                          ? "#dc2626"
-                          : "#475569",
-                  },
-                ]}
-              >
-                <Text style={styles.badgeText}>{laptop.kategori}</Text>
+        <View style={styles.statsContainer}>
+          <Text style={styles.statsText}>
+            📊 Total Model: {statistik.jumlahModel} unit
+          </Text>
+          <Text style={styles.statsText}>
+            💰 Rata-rata: {statistik.rataRataHarga}
+          </Text>
+        </View>
+
+        <Text style={styles.sectionTitle}>Rekomendasi Perangkat</Text>
+        {laptopTampil.length === 0 ? (
+          <Text style={styles.emptyText}>Laptop tidak ditemukan...</Text>
+        ) : (
+          laptopTampil.map((laptop) => (
+            <View key={laptop.id} style={styles.card}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.cardTitle}>{laptop.nama}</Text>
+
+                <View
+                  style={[
+                    styles.badge,
+                    {
+                      backgroundColor:
+                        laptop.kategori === "Coding"
+                          ? "#0284c7"
+                          : laptop.kategori === "Gaming"
+                            ? "#dc2626"
+                            : "#475569",
+                    },
+                  ]}
+                >
+                  <Text style={styles.badgeText}>{laptop.kategori}</Text>
+                </View>
+              </View>
+
+              <View style={styles.specContainer}>
+                <Text style={styles.cardDetail}>⚡ {laptop.processor}</Text>
+                <Text style={styles.cardDetail}>💾 RAM {laptop.ram}</Text>
+              </View>
+
+              <View style={styles.cardFooter}>
+                <Text style={styles.cardPriceLabel}>Estimasi Harga</Text>
+                <Text style={styles.cardPrice}>
+                  {formatRupiah(laptop.harga)}
+                </Text>
               </View>
             </View>
-
-            <View style={styles.specContainer}>
-              <Text style={styles.cardDetail}>⚡ {laptop.processor}</Text>
-              <Text style={styles.cardDetail}>💾 RAM {laptop.ram}</Text>
-            </View>
-
-            <View style={styles.cardFooter}>
-              <Text style={styles.cardPriceLabel}>Estimasi Harga</Text>
-              <Text style={styles.cardPrice}>{formatRupiah(laptop.harga)}</Text>
-            </View>
-          </View>
-        ))}
+          ))
+        )}
 
         <Text style={[styles.sectionTitle, { marginTop: 24 }]}>
           Tips & Perawatan Hardware
@@ -102,7 +136,6 @@ export default function Index() {
             <View style={styles.tipHeaderRow}>
               <Text style={styles.tipTitle}>{tip.judul}</Text>
 
-              {/* Inline Style Kondisional Prioritas */}
               <View
                 style={[
                   styles.priorityBadge,
