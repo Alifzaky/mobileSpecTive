@@ -1,6 +1,5 @@
 import { Laptop, dataLaptop } from "./laptopData";
 
-// Custom Function dengan Loop (for...of)
 export const filterLaptopBerdasarkanKategori = (kategori: string): Laptop[] => {
   if (kategori === "Semua") return dataLaptop;
 
@@ -13,7 +12,6 @@ export const filterLaptopBerdasarkanKategori = (kategori: string): Laptop[] => {
   return hasilFilter;
 };
 
-// Custom Function Format Rupiah
 export const formatRupiah = (angka: number): string => {
   return `Rp ${angka}.000.000`;
 };
