@@ -6,6 +6,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -13,6 +14,10 @@ import {
 import { dataTips } from "./components/laptopData";
 import { formatRupiah } from "./components/laptopLogic";
 import { styles } from "./components/laptopStyles";
+import {
+  cariLaptopByKeyword,
+  getStatistikLaptop,
+} from "./components/laptopUtils";
 
 interface Aksesoris {
   id: string;
@@ -27,13 +32,16 @@ const daftarAksesoris: Aksesoris[] = [
 ];
 
 export default function Index() {
-  const router = useRouter();
-  
-  const [pesanSambut, setPesanSambut] = useState<string>("Memuat...");
+  const [kategoriDipilih, setKategoriDipilih] = useState<string>("Semua");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  useEffect(() => {
-    setPesanSambut("Selamat datang di Pusat Panduan Laptop!");
-  }, []);
+  const laptopBerdasarkanKategori =
+    filterLaptopBerdasarkanKategori(kategoriDipilih);
+  const laptopTampil = cariLaptopByKeyword(
+    laptopBerdasarkanKategori,
+    searchQuery,
+  );
+  const statistik = getStatistikLaptop(laptopBerdasarkanKategori);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -59,16 +67,63 @@ export default function Index() {
           </Text>
         </View>
 
-        {/* 2. Menerapkan fungsi router push() dan replace() */}
-        <View style={localStyles.navContainer}>
-          <TouchableOpacity style={localStyles.primaryBtn} onPress={() => router.push("/recomendations")}>
-            <Text style={localStyles.primaryBtnText}>Cari Rekomendasi Laptop (Push)</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={localStyles.secondaryBtn} onPress={() => router.replace("/")}>
-            <Text style={localStyles.secondaryBtnText}>Muat Ulang Halaman (Replace)</Text>
-          </TouchableOpacity>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Cari nama laptop atau processor..."
+          placeholderTextColor="#64748b"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+
+        <View style={styles.statsContainer}>
+          <Text style={styles.statsText}>
+            📊 Total Model: {statistik.jumlahModel} unit
+          </Text>
+          <Text style={styles.statsText}>
+            💰 Rata-rata: {statistik.rataRataHarga}
+          </Text>
         </View>
+
+        <Text style={styles.sectionTitle}>Rekomendasi Perangkat</Text>
+        {laptopTampil.length === 0 ? (
+          <Text style={styles.emptyText}>Laptop tidak ditemukan...</Text>
+        ) : (
+          laptopTampil.map((laptop) => (
+            <View key={laptop.id} style={styles.card}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.cardTitle}>{laptop.nama}</Text>
+
+                <View
+                  style={[
+                    styles.badge,
+                    {
+                      backgroundColor:
+                        laptop.kategori === "Coding"
+                          ? "#0284c7"
+                          : laptop.kategori === "Gaming"
+                            ? "#dc2626"
+                            : "#475569",
+                    },
+                  ]}
+                >
+                  <Text style={styles.badgeText}>{laptop.kategori}</Text>
+                </View>
+              </View>
+
+              <View style={styles.specContainer}>
+                <Text style={styles.cardDetail}>⚡ {laptop.processor}</Text>
+                <Text style={styles.cardDetail}>💾 RAM {laptop.ram}</Text>
+              </View>
+
+              <View style={styles.cardFooter}>
+                <Text style={styles.cardPriceLabel}>Estimasi Harga</Text>
+                <Text style={styles.cardPrice}>
+                  {formatRupiah(laptop.harga)}
+                </Text>
+              </View>
+            </View>
+          ))
+        )}
 
         <Text style={[styles.sectionTitle, localStyles.spacingTop]}>
           Tips & Perawatan Hardware
@@ -77,8 +132,7 @@ export default function Index() {
           <View key={tip.id} style={styles.tipCard}>
             <View style={styles.tipHeaderRow}>
               <Text style={styles.tipTitle}>{tip.judul}</Text>
-              
-              {/* Mengganti inline style kondisional dengan eksternal/lokal style */}
+
               <View
                 style={[
                   styles.priorityBadge,
