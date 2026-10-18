@@ -1,39 +1,39 @@
-import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 
-import { dataTips } from "./components/laptopData";
-import { formatRupiah } from "./components/laptopLogic";
+import { useRouter } from "expo-router";
+import {
+  filterLaptopBerdasarkanKategori,
+  formatRupiah,
+} from "./components/laptopLogic";
 import { styles } from "./components/laptopStyles";
 import {
   cariLaptopByKeyword,
   getStatistikLaptop,
 } from "./components/laptopUtils";
 
-interface Aksesoris {
-  id: string;
-  namaBarang: string;
-  kategori: string;
-  harga: number;
-}
-
-const daftarAksesoris: Aksesoris[] = [
-  { id: "aks1", namaBarang: "Mouse Wireless Logitech", kategori: "Produktivitas", harga: 250000 },
-  { id: "aks2", namaBarang: "Cooling Pad DeepCool", kategori: "Gaming", harga: 300000 },
-];
-
 export default function Index() {
+  const router = useRouter();
   const [kategoriDipilih, setKategoriDipilih] = useState<string>("Semua");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const laptopBerdasarkanKategori =
     filterLaptopBerdasarkanKategori(kategoriDipilih);
@@ -43,9 +43,25 @@ export default function Index() {
   );
   const statistik = getStatistikLaptop(laptopBerdasarkanKategori);
 
+  if (isLoading) {
+    return (
+      <SafeAreaView
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#0ea5e9" />
+        <Text style={{ color: "white", marginTop: 15 }}>
+          Memuat Database Laptop...
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content"  />
+      <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
 
       <View style={styles.header}>
         <View style={styles.headerIndicator} />
@@ -58,13 +74,27 @@ export default function Index() {
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        
-        {/* Card Penjelasan Aplikasi */}
-        <View style={localStyles.introCard}>
-          <Text style={localStyles.introTitle}>{pesanSambut}</Text>
-          <Text style={localStyles.introDesc}>
-            Aplikasi ini dirancang untuk membantu Anda menemukan laptop yang sesuai dengan kebutuhan, serta memberikan panduan lengkap mengenai perawatan hardware dan software agar perangkat Anda tetap awet.
-          </Text>
+        <Text style={styles.sectionTitle}>Pilih Kebutuhan Utama</Text>
+        <View style={styles.filterContainer}>
+          {["Semua", "Coding", "Gaming", "Office"].map((kat) => (
+            <TouchableOpacity
+              key={kat}
+              style={[
+                styles.filterButton,
+                kategoriDipilih === kat && styles.filterButtonActive,
+              ]}
+              onPress={() => setKategoriDipilih(kat)}
+            >
+              <Text
+                style={[
+                  styles.filterText,
+                  kategoriDipilih === kat && styles.filterTextActive,
+                ]}
+              >
+                {kat}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
 
         <TextInput
@@ -89,7 +119,11 @@ export default function Index() {
           <Text style={styles.emptyText}>Laptop tidak ditemukan...</Text>
         ) : (
           laptopTampil.map((laptop) => (
-            <View key={laptop.id} style={styles.card}>
+            <TouchableOpacity
+              key={laptop.id}
+              style={styles.card}
+              onPress={() => router.push(`./detail/${laptop.id}`)}
+            >
               <View style={styles.cardHeader}>
                 <Text style={styles.cardTitle}>{laptop.nama}</Text>
 
@@ -111,8 +145,8 @@ export default function Index() {
               </View>
 
               <View style={styles.specContainer}>
-                <Text style={styles.cardDetail}>⚡ {laptop.processor}</Text>
-                <Text style={styles.cardDetail}>💾 RAM {laptop.ram}</Text>
+                <Text style={styles.cardDetail}>💻 {laptop.processor}</Text>
+                <Text style={styles.cardDetail}>🧠 RAM {laptop.ram}</Text>
               </View>
 
               <View style={styles.cardFooter}>
@@ -121,69 +155,23 @@ export default function Index() {
                   {formatRupiah(laptop.harga)}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           ))
         )}
 
-        <Text style={[styles.sectionTitle, localStyles.spacingTop]}>
+        <Text style={[styles.sectionTitle, { marginTop: 24 }]}>
           Tips & Perawatan Hardware
         </Text>
-        {dataTips.map((tip) => (
-          <View key={tip.id} style={styles.tipCard}>
-            <View style={styles.tipHeaderRow}>
-              <Text style={styles.tipTitle}>{tip.judul}</Text>
-
-              <View
-                style={[
-                  styles.priorityBadge,
-                  tip.tingkatPenting === "Tinggi" ? localStyles.bgPriorityHigh : localStyles.bgPriorityLow
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.priorityText,
-                    tip.tingkatPenting === "Tinggi" ? localStyles.textPriorityHigh : localStyles.textPriorityLow
-                  ]}
-                >
-                  {tip.tingkatPenting}
-                </Text>
-              </View>
-            </View>
-            <Text style={styles.tipDesc}>{tip.deskripsi}</Text>
-            {/* Tombol "Tips Lainnya" dihapus karena tidak jadi pakai halaman tips baru */}
-          </View>
-        ))}
-
-        {/* Mengakses dan menampilkan interface list objek baru */}
-        <Text style={[styles.sectionTitle, localStyles.spacingTop]}>
-          Rekomendasi Aksesoris Tambahan
-        </Text>
-        {daftarAksesoris.map((item) => (
-          <View key={item.id} style={styles.tipCard}>
-            <Text style={styles.tipTitle}>{item.namaBarang}</Text>
-            <Text style={styles.tipDesc}>Kategori: {item.kategori}</Text>
-            <Text style={[styles.cardPrice, { marginTop: 8 }]}>{formatRupiah(item.harga)}</Text>
-          </View>
-        ))}
-
+        <TouchableOpacity
+          style={[
+            styles.filterButtonActive,
+            { alignSelf: "center", marginTop: 10, paddingHorizontal: 20 },
+          ]}
+          onPress={() => router.push("./tips.tsx")}
+        >
+          <Text style={styles.filterTextActive}>📖 Buka Panduan Perawatan</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-// 3. Kumpulan style inline yang dipindahkan menjadi external/local
-const localStyles = StyleSheet.create({
-  introCard: { backgroundColor: "#ffffff", padding: 16, borderRadius: 12, marginBottom: 24, elevation: 2 },
-  introTitle: { fontSize: 18, fontWeight: "bold", color: "#0f172a", marginBottom: 8 },
-  introDesc: { fontSize: 14, color: "#475569", lineHeight: 22 },
-  navContainer: { marginBottom: 24, gap: 12 },
-  primaryBtn: { backgroundColor: "#0284c7", paddingVertical: 14, borderRadius: 8, alignItems: "center" },
-  primaryBtnText: { color: "#ffffff", fontSize: 16, fontWeight: "bold" },
-  secondaryBtn: { backgroundColor: "#334155", paddingVertical: 12, borderRadius: 8, alignItems: "center" },
-  secondaryBtnText: { color: "#ffffff", fontSize: 14, fontWeight: "bold" },
-  bgPriorityHigh: { backgroundColor: "#fee2e2" },
-  bgPriorityLow: { backgroundColor: "#fef3c7" },
-  textPriorityHigh: { color: "#991b1b" },
-  textPriorityLow: { color: "#92400e" },
-  spacingTop: { marginTop: 24 },
-});
