@@ -11,11 +11,11 @@ import {
 } from "react-native";
 
 import { useRouter } from "expo-router";
+import { styles } from "../..//components/laptopStyles";
 import {
   filterLaptopBerdasarkanKategori,
   formatRupiah,
 } from "../../components/laptopLogic";
-import { styles } from "../..//components/laptopStyles";
 import {
   cariLaptopByKeyword,
   getStatistikLaptop,
@@ -167,7 +167,7 @@ export default function Index() {
             styles.filterButtonActive,
             { alignSelf: "center", marginTop: 10, paddingHorizontal: 20 },
           ]}
-          onPress={() => router.push("./tips.tsx")}
+          onPress={() => router.push("./tips")}
         >
           <Text style={styles.filterTextActive}>📖 Buka Panduan Perawatan</Text>
         </TouchableOpacity>
