@@ -1,4 +1,4 @@
-# mobileSpecTive
+💻 # mobileSpecTive
 
 Aplikasi mobile untuk membantu pengguna memilih laptop yang sesuai kebutuhan, sekaligus memberikan panduan perawatan perangkat agar tetap optimal. Project ini masih dalam tahap pengembangan awal, jadi struktur dan fitur bisa berubah seiring progressnya.
 
