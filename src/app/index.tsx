@@ -1,5 +1,4 @@
-import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -7,12 +6,11 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 import { dataTips } from "./components/laptopData";
-import { formatRupiah } from "./components/laptopLogic";
+import { filterLaptopBerdasarkanKategori, formatRupiah } from "./components/laptopLogic";
 import { styles } from "./components/laptopStyles";
 import {
   cariLaptopByKeyword,
@@ -35,8 +33,12 @@ export default function Index() {
   const [kategoriDipilih, setKategoriDipilih] = useState<string>("Semua");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const laptopBerdasarkanKategori =
-    filterLaptopBerdasarkanKategori(kategoriDipilih);
+  const pesanSambut =
+    kategoriDipilih === "Semua"
+      ? "Selamat datang di Laptop Care & Specs"
+      : `Jelajahi pilihan ${kategoriDipilih} yang kami rekomendasikan`;
+
+  const laptopBerdasarkanKategori = filterLaptopBerdasarkanKategori(kategoriDipilih);
   const laptopTampil = cariLaptopByKeyword(
     laptopBerdasarkanKategori,
     searchQuery,
