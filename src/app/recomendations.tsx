@@ -9,8 +9,8 @@ import {
   View,
 } from "react-native";
 
-import { filterLaptopBerdasarkanKategori, formatRupiah } from "./components/laptopLogic";
-import { styles } from "./components/laptopStyles";
+import { filterLaptopBerdasarkanKategori, formatRupiah } from "../../components/laptopLogic";
+import { styles } from "../../components/laptopStyles";
 
 export default function Recommendations() {
   const router = useRouter();
