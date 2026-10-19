@@ -1,9 +1,5 @@
-// File: app/tips.tsx
-// Dikerjakan oleh Anggota 3
-
 import { SafeAreaView, ScrollView, View, Text, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
-// Pastikan path import sesuai dengan folder kalian
 import { dataTips } from "../../components/laptopData";
 import { styles } from "../../components/laptopStyles";
 
@@ -41,8 +37,7 @@ export default function TipsPage() {
             <Text style={styles.tipDesc}>{tip.deskripsi}</Text>
           </View>
         ))}
-
-        {/* Menggunakan replace() sebagai syarat 1 fungsi expo-router tambahan */}
+        
         <TouchableOpacity 
           style={[styles.filterButtonActive, { marginTop: 30, alignSelf: 'center', paddingHorizontal: 20 }]} 
           onPress={() => router.replace("/")}
