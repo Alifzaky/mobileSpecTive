@@ -14,12 +14,12 @@ import { useRouter } from "expo-router";
 import {
   filterLaptopBerdasarkanKategori,
   formatRupiah,
-} from "./components/laptopLogic";
-import { styles } from "./components/laptopStyles";
+} from "../../components/laptopLogic";
+import { styles } from "../..//components/laptopStyles";
 import {
   cariLaptopByKeyword,
   getStatistikLaptop,
-} from "./components/laptopUtils";
+} from "../../components/laptopUtils";
 
 export default function Index() {
   const router = useRouter();

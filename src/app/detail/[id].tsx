@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { styles } from ".././components/laptopStyles"; 
+import { styles } from "../../../components/laptopStyles"; 
 
 export default function DetailLaptop() {
   const { id } = useLocalSearchParams();
