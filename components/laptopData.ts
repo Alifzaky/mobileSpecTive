@@ -69,4 +69,11 @@ export const dataTips: TipPerawatan[] = [
       "Bersihkan kipas dan heatsink setiap 6 bulan sekali agar suhu laptop tetap stabil.",
     tingkatPenting: "Sedang",
   },
+   {
+    id: "t3",
+    judul: "Ganti thermal paste",
+    deskripsi:
+      "Dilakukan ketika laptop sudah menunjukkan gejala panas berlebih",
+    tingkatPenting: "Sedang",
+  },
 ];
