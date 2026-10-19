@@ -1,56 +1,113 @@
-# Welcome to your Expo app 👋
+ # 💻 mobileSpecTive
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplikasi mobile untuk membantu pengguna memilih laptop yang sesuai kebutuhan, sekaligus memberikan panduan perawatan perangkat agar tetap optimal. Project ini masih dalam tahap pengembangan awal, jadi struktur dan fitur bisa berubah seiring progressnya.
 
-## Get started
+## Status Proyek
 
-1. Install dependencies
+Draft / belum final
 
-   ```bash
-   npm install
-   ```
+## Deskripsi
 
-2. Start the app
+mobileSpecTive adalah aplikasi berbasis React Native dengan Expo yang menampilkan:
 
-   ```bash
-   npx expo start
-   ```
+- rekomendasi laptop berdasarkan kebutuhan utama seperti Coding, Gaming, dan Office
+- fitur pencarian laptop berdasarkan nama atau processor
+- informasi harga dan spesifikasi dasar
+- halaman detail laptop
+- panduan perawatan hardware seperti menjaga baterai dan membersihkan debu
 
-In the output, you'll find options to open the app in a
+Aplikasi ini dibuat dengan pendekatan mobile-first untuk memudahkan pengguna melihat rekomendasi dengan cepat dan nyaman di perangkat mobile.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Fitur Utama
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Filter kategori laptop: Semua, Coding, Gaming, Office
+- Search berdasarkan kata kunci
+- Statistik total model dan rata-rata harga
+- Halaman detail tiap laptop
+- Panduan tips perawatan hardware
+- UI yang sederhana, bersih, dan responsif untuk mobile
 
-## Get a fresh project
+## Teknologi yang Digunakan
 
-When you're ready, run:
+- React Native
+- Expo
+- Expo Router
+- TypeScript
+- React Native Safe Area Context
 
-```bash
-npm run reset-project
+## Struktur Project
+
+```text
+mobileSpecTive/
+├── app.json
+├── package.json
+├── tsconfig.json
+├── assets/
+├── components/
+│   ├── laptopData.ts
+│   ├── laptopLogic.ts
+│   ├── laptopStyles.ts
+│   └── laptopUtils.ts
+├── src/
+│   └── app/
+│       ├── _layout.tsx
+│       ├── index.tsx
+│       ├── recomendations.tsx
+│       ├── tips.tsx
+│       └── detail/
+│           └── [id].tsx
+└── README.md
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Persiapan Awal
 
-### Other setup steps
+Pastikan perangkat Anda sudah memiliki Node.js dan Expo CLI siap digunakan.
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npm install
+```
 
-## Learn more
+## Menjalankan Aplikasi
 
-To learn more about developing your project with Expo, look at the following resources:
+Untuk menjalankan aplikasi di mode development:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npx expo start
+```
 
-## Join the community
+Jika ingin langsung membuka di emulator/device:
 
-Join our community of developers creating universal apps.
+```bash
+npx expo start --android
+npx expo start --ios
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Untuk membuka versi web:
+
+```bash
+npm run web
+```
+
+## Catatan
+
+- Project ini masih bersifat draft dan bisa mengalami perubahan layout, struktur, maupun fitur.
+- Beberapa bagian masih mungkin dikembangkan lebih lanjut sesuai kebutuhan proyek.
+- README ini dibuat sebagai dokumentasi awal agar proyek lebih mudah dipahami saat dikerjakan.
+
+## Roadmap Sementara
+
+Berikut beberapa hal yang kemungkinan akan dikembangkan ke depan:
+
+- menambahkan fitur filter yang lebih detail
+- memperbaiki navigasi antar halaman
+- menambah data laptop yang lebih lengkap
+- menambahkan nilai rekomendasi berdasarkan kebutuhan pengguna
+- meningkatkan desain UI/UX agar lebih modern dan konsisten
+
+## Kontribusi
+
+Project ini masih dalam tahap pengembangan. Jika Anda ingin melanjutkan pengembangan, silakan fork atau clone repositori ini lalu bantu lanjutkan fitur-fitur yang masih belum final.
+
+## Lisensi
+
+Proyek ini menggunakan lisensi yang tersedia di file LICENSE.
