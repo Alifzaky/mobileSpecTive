@@ -167,7 +167,7 @@ export default function Index() {
             styles.filterButtonActive,
             { alignSelf: "center", marginTop: 10, paddingHorizontal: 20 },
           ]}
-          onPress={() => router.push("./tipzs")}
+          onPress={() => router.push("./tips")}
         >
           <Text style={styles.filterTextActive}>📖 Buka Panduan Perawatan</Text>
         </TouchableOpacity>
