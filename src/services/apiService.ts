@@ -1,4 +1,4 @@
-import { LaptopAPIResponse, ExternalLaptop } from "../types/api";
+import { ExternalLaptop, LaptopAPIResponse } from "../types/api";
 export const fetchExternalLaptops = (): Promise<ExternalLaptop[]> => {
   return new Promise((resolve, reject) => {
     fetch("https://dummyjson.com/products/category/laptops")

@@ -1,7 +1,7 @@
 import { SafeAreaView, ScrollView, View, Text, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
-import { dataTips } from "../../components/laptopData";
-import { styles } from "../../components/laptopStyles";
+import { dataTips } from "../../../components/laptopData";
+import { styles } from "../../../components/laptopStyles";
 
 export default function TipsPage() {
   const router = useRouter();
