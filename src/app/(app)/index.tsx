@@ -1,23 +1,26 @@
-import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  Image
 } from "react-native";
+import { useRouter } from "expo-router";
 
-import { styles } from "../../components/laptopStyles";
-import { customDelay, fetchExternalLaptops } from "./services/apiService";
-import { ExternalLaptop } from "./types/api";
+import { styles } from "../../../components/laptopStyles";
+import { fetchExternalLaptops, customDelay } from "../../services/apiService";
+import { ExternalLaptop } from "../../types/api";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Index() {
   const router = useRouter();
+  const { user, signOut } = useAuth(); // Ambil data user & fungsi signOut
+
   const [kategoriDipilih, setKategoriDipilih] = useState<string>("Semua");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -75,12 +78,26 @@ export default function Index() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
-      <View style={styles.header}>
-        <View style={styles.headerIndicator} />
-        <View>
+      
+      <View style={[styles.header, { flexDirection: "row", justifyContent: "space-between", alignItems: "center" }]}>
+        <View style={{ flex: 1 }}>
           <Text style={styles.headerTitle}>Laptop Care & Specs</Text>
-          <Text style={styles.headerSubtitle}>Sistem Rekomendasi & Panduan Perawatan</Text>
+          <Text style={styles.headerSubtitle}>
+            Halo, {user?.user_metadata?.callsign || user?.email || "User"}
+          </Text>
         </View>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#ef4444",
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            borderRadius: 6,
+          }}
+          onPress={signOut}
+        >
+          <Text style={{ color: "#ffffff", fontWeight: "bold", fontSize: 12 }}>Keluar</Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
