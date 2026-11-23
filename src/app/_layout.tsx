@@ -9,7 +9,15 @@ function InitialLayout() {
   const router = useRouter();
 
   useEffect(() => {
-    //todo 1
+    if (isLoading) return;
+
+    const inAuthGroup = segments[0] === "(auth)";
+
+    if (!session && !inAuthGroup) {
+      router.replace("/(auth)/login");
+    } else if (session && inAuthGroup) {
+      router.replace("/(app)");
+    }
   }, [session, isLoading, segments]);
 
   if (isLoading) {
